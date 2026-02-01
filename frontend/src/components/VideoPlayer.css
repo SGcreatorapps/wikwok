@@ -12,7 +12,23 @@
 .video-element {
   height: 100%;
   width: 100%;
-  object-fit: cover;
+  object-fit: contain; /* Show full video without cropping */
+  background: #000;
+}
+
+/* For portrait/vertical videos on desktop, still use cover */
+@media (min-width: 769px) {
+  .video-element {
+    object-fit: cover;
+  }
+}
+
+/* On mobile: use contain to show full video including horizontal ones */
+@media (max-width: 768px) {
+  .video-element {
+    object-fit: contain;
+    max-height: 100vh;
+  }
 }
 
 .play-overlay {

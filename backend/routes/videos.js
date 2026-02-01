@@ -19,6 +19,9 @@ const upload = multer({
   }
 });
 
+// Maximum videos per user (adjust as needed)
+const MAX_VIDEOS_PER_USER = 100;
+
 router.post('/upload', authenticateToken, upload.single('video'), async (req, res) => {
   try {
     if (!req.file) {
@@ -30,6 +33,38 @@ router.post('/upload', authenticateToken, upload.single('video'), async (req, re
     const videoUrl = req.file.path;
     // Generate thumbnail URL by adding Cloudinary transformation parameters
     const thumbnailUrl = req.file.path.replace('/upload/', '/upload/w_400,h_600,c_fill/');
+
+    // Check user's video count
+    const userVideoCount = await prisma.video.count({
+      where: { userId: req.user.id }
+    });
+
+    let deletedOldVideo = false;
+    let deletedVideoInfo = null;
+
+    // If user has reached the limit, delete the oldest video
+    if (userVideoCount >= MAX_VIDEOS_PER_USER) {
+      // Find the oldest video
+      const oldestVideo = await prisma.video.findFirst({
+        where: { userId: req.user.id },
+        orderBy: { createdAt: 'asc' }
+      });
+
+      if (oldestVideo) {
+        deletedVideoInfo = {
+          id: oldestVideo.id,
+          caption: oldestVideo.caption
+        };
+        
+        // Delete the oldest video
+        await prisma.video.delete({
+          where: { id: oldestVideo.id }
+        });
+        
+        deletedOldVideo = true;
+        console.log(`Deleted oldest video ${oldestVideo.id} for user ${req.user.id}`);
+      }
+    }
 
     const video = await prisma.video.create({
       data: {
@@ -50,7 +85,11 @@ router.post('/upload', authenticateToken, upload.single('video'), async (req, re
       }
     });
 
-    res.status(201).json(video);
+    res.status(201).json({
+      ...video,
+      storageNotice: deletedOldVideo ? `Your oldest video was deleted to make room for this new one. Maximum ${MAX_VIDEOS_PER_USER} videos per user.` : null,
+      deletedVideo: deletedVideoInfo
+    });
   } catch (error) {
     console.error('Upload error:', error);
     res.status(500).json({ error: 'Failed to upload video' });

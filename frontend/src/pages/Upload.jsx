@@ -9,6 +9,7 @@ const Upload = () => {
   const [caption, setCaption] = useState('');
   const [preview, setPreview] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [storageNotice, setStorageNotice] = useState(null);
   const navigate = useNavigate();
 
   const handleFileChange = (e) => {
@@ -29,12 +30,21 @@ const Upload = () => {
     formData.append('caption', caption);
 
     try {
-      await videoAPI.upload(formData);
-      navigate('/');
+      const response = await videoAPI.upload(formData);
+      
+      // Check if storage notice was returned (old video deleted)
+      if (response.data.storageNotice) {
+        setStorageNotice(response.data.storageNotice);
+        // Show notice for 3 seconds then navigate
+        setTimeout(() => {
+          navigate('/');
+        }, 3000);
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       console.error('Upload failed:', error);
       alert('Failed to upload video');
-    } finally {
       setUploading(false);
     }
   };
@@ -43,6 +53,17 @@ const Upload = () => {
     <div className="upload-container">
       <div className="upload-content">
         <h1>Upload Video</h1>
+        
+        <div className="storage-disclaimer">
+          <p>📱 <strong>Storage Policy:</strong> Maximum 100 videos per user. When you upload a new video and reach the limit, your oldest video will be automatically deleted to make room.</p>
+        </div>
+
+        {storageNotice && (
+          <div className="storage-notice-alert">
+            <p>⚠️ {storageNotice}</p>
+            <p>Redirecting to home...</p>
+          </div>
+        )}
         
         {!preview ? (
           <div className="file-input-wrapper">

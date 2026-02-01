@@ -58,16 +58,28 @@
 /* Mobile optimizations */
 @media (max-width: 768px) {
   .bottom-nav {
-    height: 65px;
+    height: 80px;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 10px);
   }
   
   .nav-item {
-    font-size: 10px;
+    font-size: 12px;
+    padding: 10px 0;
+  }
+  
+  .nav-item svg {
+    width: 28px;
+    height: 28px;
   }
   
   .upload-circle {
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
+  }
+  
+  .upload-circle svg {
+    width: 32px;
+    height: 32px;
   }
 }
 

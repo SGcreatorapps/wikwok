@@ -16,6 +16,8 @@ const VideoPlayer = ({ video, isActive }) => {
   const [newComment, setNewComment] = useState('');
   const [copied, setCopied] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+  const [showHeartAnimation, setShowHeartAnimation] = useState(false);
+  const lastTapTime = useRef(0);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -69,6 +71,23 @@ const VideoPlayer = ({ video, isActive }) => {
     } catch (error) {
       console.error('Failed to like:', error);
     }
+  };
+
+  const handleVideoClick = () => {
+    const now = Date.now();
+    const timeSinceLastTap = now - lastTapTime.current;
+    
+    if (timeSinceLastTap < 300) {
+      // Double tap detected
+      handleLike();
+      setShowHeartAnimation(true);
+      setTimeout(() => setShowHeartAnimation(false), 800);
+    } else {
+      // Single tap - toggle play
+      togglePlay();
+    }
+    
+    lastTapTime.current = now;
   };
 
   const loadComments = async () => {
@@ -155,13 +174,19 @@ const VideoPlayer = ({ video, isActive }) => {
         loop
         playsInline
         muted={isMuted}
-        onClick={togglePlay}
+        onClick={handleVideoClick}
         className="video-element"
       />
       
       {!isPlaying && (
-        <div className="play-overlay" onClick={togglePlay}>
+        <div className="play-overlay" onClick={handleVideoClick}>
           <Play size={64} />
+        </div>
+      )}
+
+      {showHeartAnimation && (
+        <div className="heart-animation">
+          <Heart size={120} fill="#ff2b5e" color="#ff2b5e" />
         </div>
       )}
 

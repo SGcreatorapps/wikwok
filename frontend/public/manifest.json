@@ -1,7 +1,7 @@
 {
-  "name": "WikiWok",
-  "short_name": "WikiWok",
-  "description": "A futuristic video sharing platform",
+  "name": "WIKWOK",
+  "short_name": "WIKWOK",
+  "description": "Enter the Grid. Share your reality.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",

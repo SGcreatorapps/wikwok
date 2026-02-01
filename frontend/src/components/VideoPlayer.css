@@ -361,6 +361,43 @@
 /* Safe area for notched phones */
 @supports (padding: max(0px)) {
   .video-overlay {
-    padding-bottom: max(80px, env(safe-area-inset-bottom) + 60px);
+    padding-bottom: max(100px, env(safe-area-inset-bottom) + 80px);
+  }
+}
+
+/* Heart animation for double tap */
+.heart-animation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  animation: heartPop 0.8s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes heartPop {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Fix video padding for bottom nav */
+.video-container {
+  padding-bottom: 80px;
+}
+
+@media (max-width: 768px) {
+  .video-container {
+    padding-bottom: 100px;
   }
 }

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { videoAPI } from '../services/api';
-import { Heart, MessageCircle, Share2, Music2, Volume2, VolumeX, Play, Pause, Trash2, Link2, Check } from 'lucide-react';
+import { Heart, MessageCircle, Share2, Music2, Volume2, VolumeX, Play, Pause, Trash2, Link2, Check, Repeat2 } from 'lucide-react';
 import './VideoPlayer.css';
 
 const VideoPlayer = ({ video, isActive }) => {
@@ -17,6 +17,8 @@ const VideoPlayer = ({ video, isActive }) => {
   const [copied, setCopied] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [showHeartAnimation, setShowHeartAnimation] = useState(false);
+  const [reposted, setReposted] = useState(false);
+  const [repostCount, setRepostCount] = useState(0);
   const lastTapTime = useRef(0);
 
   useEffect(() => {
@@ -34,6 +36,7 @@ const VideoPlayer = ({ video, isActive }) => {
   useEffect(() => {
     if (user && video.id) {
       checkLikeStatus();
+      checkRepostStatus();
     }
   }, [user, video.id]);
 
@@ -41,6 +44,14 @@ const VideoPlayer = ({ video, isActive }) => {
     try {
       const response = await videoAPI.checkLike(video.id);
       setLiked(response.data.liked);
+    } catch (error) {}
+  };
+
+  const checkRepostStatus = async () => {
+    try {
+      const response = await videoAPI.checkRepost(video.id);
+      setReposted(response.data.reposted);
+      setRepostCount(response.data.repostCount);
     } catch (error) {}
   };
 
@@ -70,6 +81,17 @@ const VideoPlayer = ({ video, isActive }) => {
       setLikesCount(prev => response.data.liked ? prev + 1 : prev - 1);
     } catch (error) {
       console.error('Failed to like:', error);
+    }
+  };
+
+  const handleRepost = async () => {
+    if (!user) return;
+    try {
+      const response = await videoAPI.repost(video.id);
+      setReposted(response.data.reposted);
+      setRepostCount(prev => response.data.reposted ? prev + 1 : prev - 1);
+    } catch (error) {
+      console.error('Failed to repost:', error);
     }
   };
 
@@ -228,6 +250,15 @@ const VideoPlayer = ({ video, isActive }) => {
           <div className="action-button" onClick={handleShare}>
             {copied ? <Check size={32} color="#00ff00" /> : <Share2 size={32} />}
             <span>{copied ? 'Copied!' : 'Share'}</span>
+          </div>
+
+          <div className="action-button" onClick={handleRepost}>
+            <Repeat2 
+              size={32} 
+              className={reposted ? 'reposted' : ''}
+              color={reposted ? '#00ff41' : 'white'}
+            />
+            <span>{repostCount || 'Repost'}</span>
           </div>
 
           {isOwner && (

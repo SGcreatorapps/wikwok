@@ -312,6 +312,67 @@ router.get('/:id/comments', async (req, res) => {
   }
 });
 
+// Repost routes
+router.post('/:id/repost', authenticateToken, async (req, res) => {
+  try {
+    const videoId = req.params.id;
+    const userId = req.user.id;
+    const { caption } = req.body;
+
+    // Check if already reposted
+    const existingRepost = await prisma.repost.findUnique({
+      where: {
+        userId_videoId: {
+          userId,
+          videoId
+        }
+      }
+    });
+
+    if (existingRepost) {
+      // Remove repost (toggle off)
+      await prisma.repost.delete({
+        where: { id: existingRepost.id }
+      });
+      res.json({ reposted: false });
+    } else {
+      // Add repost
+      await prisma.repost.create({
+        data: {
+          userId,
+          videoId,
+          caption: caption || null
+        }
+      });
+      res.json({ reposted: true });
+    }
+  } catch (error) {
+    console.error('Repost error:', error);
+    res.status(500).json({ error: 'Failed to toggle repost' });
+  }
+});
+
+router.get('/:id/repost-status', authenticateToken, async (req, res) => {
+  try {
+    const repost = await prisma.repost.findUnique({
+      where: {
+        userId_videoId: {
+          userId: req.user.id,
+          videoId: req.params.id
+        }
+      }
+    });
+
+    const repostCount = await prisma.repost.count({
+      where: { videoId: req.params.id }
+    });
+
+    res.json({ reposted: !!repost, repostCount });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to check repost status' });
+  }
+});
+
 router.delete('/:id', authenticateToken, async (req, res) => {
   try {
     const video = await prisma.video.findUnique({

@@ -301,6 +301,16 @@
   color: #ff6666;
 }
 
+.reposted {
+  animation: repostPulse 0.3s ease;
+}
+
+@keyframes repostPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
 /* Mobile Responsive Styles */
 @media (max-width: 768px) {
   .video-overlay {

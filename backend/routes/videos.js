@@ -273,4 +273,30 @@ router.get('/:id/comments', async (req, res) => {
   }
 });
 
+router.delete('/:id', authenticateToken, async (req, res) => {
+  try {
+    const video = await prisma.video.findUnique({
+      where: { id: req.params.id }
+    });
+
+    if (!video) {
+      return res.status(404).json({ error: 'Video not found' });
+    }
+
+    if (video.userId !== req.user.id) {
+      return res.status(403).json({ error: 'Not authorized to delete this video' });
+    }
+
+    // Delete from database (cascade will delete likes and comments)
+    await prisma.video.delete({
+      where: { id: req.params.id }
+    });
+
+    res.json({ message: 'Video deleted successfully' });
+  } catch (error) {
+    console.error('Delete error:', error);
+    res.status(500).json({ error: 'Failed to delete video' });
+  }
+});
+
 export default router;

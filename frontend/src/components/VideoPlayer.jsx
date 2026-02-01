@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { videoAPI } from '../services/api';
-import { Heart, MessageCircle, Share2, Music2, Volume2, VolumeX, Play, Pause } from 'lucide-react';
+import { Heart, MessageCircle, Share2, Music2, Volume2, VolumeX, Play, Pause, Trash2, Link2, Check } from 'lucide-react';
 import './VideoPlayer.css';
 
 const VideoPlayer = ({ video, isActive }) => {
@@ -14,6 +14,8 @@ const VideoPlayer = ({ video, isActive }) => {
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -96,6 +98,44 @@ const VideoPlayer = ({ video, isActive }) => {
     }
   };
 
+  const handleShare = async () => {
+    const shareUrl = `${window.location.origin}/?video=${video.id}`;
+    
+    if (navigator.share) {
+      // Use native share on mobile
+      try {
+        await navigator.share({
+          title: `Video by ${video.user.username}`,
+          url: shareUrl
+        });
+      } catch (error) {
+        // User cancelled
+      }
+    } else {
+      // Fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch (error) {
+        console.error('Failed to copy:', error);
+      }
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm('Are you sure you want to delete this video?')) return;
+    
+    try {
+      await videoAPI.delete(video.id);
+      // Refresh page or remove video from feed
+      window.location.reload();
+    } catch (error) {
+      console.error('Failed to delete video:', error);
+      alert('Failed to delete video');
+    }
+  };
+
   const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3001';
   
   // Helper to get full video URL (handles both Cloudinary and local URLs)
@@ -104,6 +144,8 @@ const VideoPlayer = ({ video, isActive }) => {
     if (url.startsWith('http')) return url; // Already a full URL (Cloudinary)
     return `${API_URL}${url}`; // Local URL, prepend API URL
   };
+
+  const isOwner = user && user.id === video.user.id;
 
   return (
     <div className="video-container">
@@ -158,10 +200,17 @@ const VideoPlayer = ({ video, isActive }) => {
             <span>{video.commentsCount || 0}</span>
           </div>
           
-          <div className="action-button">
-            <Share2 size={32} />
-            <span>Share</span>
+          <div className="action-button" onClick={handleShare}>
+            {copied ? <Check size={32} color="#00ff00" /> : <Share2 size={32} />}
+            <span>{copied ? 'Copied!' : 'Share'}</span>
           </div>
+
+          {isOwner && (
+            <div className="action-button delete-btn" onClick={handleDelete}>
+              <Trash2 size={32} />
+              <span>Delete</span>
+            </div>
+          )}
 
           <div className="avatar-circle">
             {video.user.avatar ? (

@@ -183,4 +183,36 @@ router.put('/profile', authenticateToken, upload.single('avatar'), async (req, r
   }
 });
 
+router.get('/search', async (req, res) => {
+  try {
+    const { q } = req.query;
+    
+    if (!q || q.length < 2) {
+      return res.json({ users: [] });
+    }
+
+    const users = await prisma.user.findMany({
+      where: {
+        OR: [
+          { username: { contains: q, mode: 'insensitive' } },
+          { displayName: { contains: q, mode: 'insensitive' } }
+        ]
+      },
+      take: 20,
+      select: {
+        id: true,
+        username: true,
+        displayName: true,
+        avatar: true,
+        bio: true
+      }
+    });
+
+    res.json({ users });
+  } catch (error) {
+    console.error('Search error:', error);
+    res.status(500).json({ error: 'Search failed' });
+  }
+});
+
 export default router;

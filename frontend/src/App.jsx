@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Upload from './pages/Upload';
 import Profile from './pages/Profile';
+import Search from './pages/Search';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -33,6 +34,7 @@ function App() {
                 <Upload />
               </ProtectedRoute>
             } />
+            <Route path="/search" element={<Search />} />
             <Route path="/profile/:username" element={<Profile />} />
             <Route path="/profile" element={
               <ProtectedRoute>

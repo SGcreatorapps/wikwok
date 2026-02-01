@@ -31,7 +31,8 @@ export const videoAPI = {
   like: (id) => api.post(`/videos/${id}/like`),
   checkLike: (id) => api.get(`/videos/${id}/like-status`),
   addComment: (id, text) => api.post(`/videos/${id}/comments`, { text }),
-  getComments: (id, cursor) => api.get(`/videos/${id}/comments`, { params: { cursor } })
+  getComments: (id, cursor) => api.get(`/videos/${id}/comments`, { params: { cursor } }),
+  delete: (id) => api.delete(`/videos/${id}`)
 };
 
 export const userAPI = {

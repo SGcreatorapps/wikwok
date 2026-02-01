@@ -4,10 +4,33 @@
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   background: #000;
+  position: relative;
+}
+
+/* Matrix rain effect overlay */
+.feed-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 255, 65, 0.02) 0px,
+      transparent 1px,
+      transparent 2px,
+      rgba(0, 255, 65, 0.02) 3px
+    );
+  pointer-events: none;
+  z-index: 1;
 }
 
 .videos-wrapper {
   width: 100%;
+  position: relative;
+  z-index: 2;
 }
 
 .loading-more {
@@ -15,5 +38,28 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: #00ff41;
+  text-shadow: 0 0 10px #00ff41;
+  font-family: 'Courier New', monospace;
+}
+
+/* Mobile fixes */
+@media (max-width: 768px) {
+  .feed-container {
+    height: 100dvh; /* Use dynamic viewport height */
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  
+  .videos-wrapper {
+    width: 100%;
+    max-width: 100vw;
+  }
+}
+
+/* Prevent horizontal scroll */
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
 }

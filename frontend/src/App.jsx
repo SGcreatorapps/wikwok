@@ -6,6 +6,7 @@ import Register from './pages/Register';
 import Upload from './pages/Upload';
 import Profile from './pages/Profile';
 import Search from './pages/Search';
+import InstallPrompt from './components/InstallPrompt';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -25,6 +26,7 @@ function App() {
     <AuthProvider>
       <Router>
         <div className="app">
+          <InstallPrompt />
           <Routes>
             <Route path="/" element={<Feed />} />
             <Route path="/login" element={<Login />} />

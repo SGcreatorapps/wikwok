@@ -8,7 +8,7 @@ const VideoPlayer = ({ video, isActive }) => {
   const { user } = useAuth();
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(video.likesCount || 0);
   const [showComments, setShowComments] = useState(false);

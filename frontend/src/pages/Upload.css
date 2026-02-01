@@ -153,6 +153,171 @@
   background: #000;
 }
 
+/* Futuristic Upload Options */
+.upload-options {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.upload-options .file-label,
+.camera-btn {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(0, 255, 65, 0.1) 0%, rgba(0, 255, 65, 0.05) 100%);
+  border: 2px solid #00ff41;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+}
+
+.upload-options .file-label:hover,
+.camera-btn:hover {
+  box-shadow: 
+    0 0 30px rgba(0, 255, 65, 0.4),
+    0 0 60px rgba(0, 255, 65, 0.2);
+  transform: translateY(-5px);
+}
+
+.camera-btn {
+  background: linear-gradient(135deg, rgba(255, 43, 94, 0.1) 0%, rgba(255, 43, 94, 0.05) 100%);
+  border-color: #ff2b5e;
+  color: #ff2b5e;
+  box-shadow: 0 0 20px rgba(255, 43, 94, 0.2);
+}
+
+.camera-btn:hover {
+  box-shadow: 
+    0 0 30px rgba(255, 43, 94, 0.4),
+    0 0 60px rgba(255, 43, 94, 0.2);
+}
+
+.camera-btn p {
+  margin-top: 10px;
+  color: #ff2b5e;
+}
+
+/* Camera Recording Styles */
+.camera-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.camera-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.camera-close {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.recording-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 0, 0, 0.8);
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+  animation: pulse 1s infinite;
+}
+
+.recording-dot {
+  fill: #ff0000;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.camera-preview {
+  flex: 1;
+  width: 100%;
+  object-fit: cover;
+}
+
+.camera-controls {
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
+}
+
+.record-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s;
+}
+
+.record-btn:active {
+  transform: scale(0.95);
+}
+
+.record-circle {
+  fill: #ff2b5e;
+  stroke: white;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 10px rgba(255, 43, 94, 0.8));
+}
+
+.stop-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 15px;
+  transition: transform 0.2s;
+}
+
+.stop-btn:active {
+  transform: scale(0.95);
+}
+
+.stop-square {
+  width: 50px;
+  height: 50px;
+  background: #ff0000;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+}
+
 /* Mobile optimizations */
 @media (max-width: 768px) {
   .storage-disclaimer {
@@ -162,5 +327,15 @@
   
   .video-preview {
     max-height: 50vh;
+  }
+  
+  .upload-options .file-label,
+  .camera-btn {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .camera-controls {
+    padding: 30px;
   }
 }

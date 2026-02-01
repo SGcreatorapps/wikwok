@@ -1,0 +1,110 @@
+.upload-container {
+  height: 100vh;
+  background: #000;
+  color: white;
+  overflow-y: auto;
+  padding-bottom: 80px;
+}
+
+.upload-content {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.upload-content h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.file-input-wrapper {
+  position: relative;
+}
+
+.file-input-wrapper input {
+  display: none;
+}
+
+.file-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  border: 2px dashed #444;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.file-label:hover {
+  border-color: #ff2b5e;
+}
+
+.upload-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.file-label p {
+  color: #888;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.video-preview {
+  width: 100%;
+  max-height: 400px;
+  border-radius: 8px;
+}
+
+.upload-form textarea {
+  padding: 15px;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background: #161823;
+  color: white;
+  font-size: 16px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.upload-form textarea:focus {
+  outline: none;
+  border-color: #ff2b5e;
+}
+
+.upload-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.upload-actions button {
+  padding: 15px 40px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.upload-actions button:first-child {
+  background: transparent;
+  border: 1px solid #444;
+  color: white;
+}
+
+.upload-actions button:last-child {
+  background: #ff2b5e;
+  color: white;
+}
+
+.upload-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

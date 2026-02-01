@@ -8,6 +8,7 @@ import './Feed.css';
 const Feed = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cursor, setCursor] = useState(null);
   const containerRef = useRef(null);
@@ -15,12 +16,15 @@ const Feed = () => {
   const fetchVideos = useCallback(async () => {
     if (loading) return;
     setLoading(true);
+    setError(null);
     try {
       const response = await videoAPI.getFeed(cursor);
+      console.log('Feed response:', response.data);
       setVideos(prev => cursor ? [...prev, ...response.data.videos] : response.data.videos);
       setCursor(response.data.nextCursor);
-    } catch (error) {
-      console.error('Failed to fetch videos:', error);
+    } catch (err) {
+      console.error('Failed to fetch videos:', err);
+      setError(err.message || 'Failed to load videos');
     } finally {
       setLoading(false);
     }
@@ -55,6 +59,18 @@ const Feed = () => {
 
   return (
     <div className="feed-container" ref={containerRef}>
+      {error && (
+        <div style={{padding: '20px', color: 'red', textAlign: 'center'}}>
+          Error: {error}
+        </div>
+      )}
+      
+      {!loading && videos.length === 0 && !error && (
+        <div style={{padding: '40px', color: '#00ff41', textAlign: 'center'}}>
+          <h2>No videos yet</h2>
+          <p>Be the first to upload!</p>
+        </div>
+      )}
 
       <div className="videos-wrapper">
         {videos.map((video, index) => (

@@ -5,7 +5,7 @@
   scroll-snap-type: y mandatory;
   background: #000;
   position: relative;
-  padding-top: 0;
+  padding-top: 50px; /* Space for debug bar */
 }
 
 /* Stories section at top */

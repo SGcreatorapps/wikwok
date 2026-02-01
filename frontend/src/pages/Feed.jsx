@@ -59,14 +59,32 @@ const Feed = () => {
 
   return (
     <div className="feed-container" ref={containerRef}>
+      {/* Debug Status Bar - Always Visible */}
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        background: '#ff2b5e',
+        color: 'white',
+        padding: '10px',
+        zIndex: 9999,
+        textAlign: 'center',
+        fontSize: '14px'
+      }}>
+        {loading ? '⏳ Loading...' : ''}
+        {error ? `❌ Error: ${error}` : ''}
+        {!loading && !error ? `✅ ${videos.length} videos loaded` : ''}
+      </div>
+
       {error && (
-        <div style={{padding: '20px', color: 'red', textAlign: 'center'}}>
+        <div style={{padding: '60px 20px 20px', color: 'red', textAlign: 'center'}}>
           Error: {error}
         </div>
       )}
       
       {!loading && videos.length === 0 && !error && (
-        <div style={{padding: '40px', color: '#00ff41', textAlign: 'center'}}>
+        <div style={{padding: '80px 40px 40px', color: '#00ff41', textAlign: 'center'}}>
           <h2>No videos yet</h2>
           <p>Be the first to upload!</p>
         </div>

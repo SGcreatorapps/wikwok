@@ -117,8 +117,7 @@ router.get('/feed', async (req, res) => {
         _count: {
           select: {
             likes: true,
-            comments: true,
-            reposts: true
+            comments: true
           }
         }
       }
@@ -128,7 +127,6 @@ router.get('/feed', async (req, res) => {
       ...video,
       likesCount: video._count.likes,
       commentsCount: video._count.comments,
-      repostCount: video._count.reposts,
       _count: undefined
     }));
 

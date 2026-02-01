@@ -95,18 +95,23 @@ const VideoPlayer = ({ video, isActive }) => {
     }
   };
 
+  const clickTimeoutRef = useRef(null);
+  
   const handleVideoClick = () => {
     const now = Date.now();
     const timeSinceLastTap = now - lastTapTime.current;
     
     if (timeSinceLastTap < 300) {
       // Double tap detected
+      clearTimeout(clickTimeoutRef.current); // Cancel single tap action
       handleLike();
       setShowHeartAnimation(true);
       setTimeout(() => setShowHeartAnimation(false), 800);
     } else {
-      // Single tap - toggle play
-      togglePlay();
+      // Wait to see if it's a double tap before playing/pausing
+      clickTimeoutRef.current = setTimeout(() => {
+        togglePlay();
+      }, 300);
     }
     
     lastTapTime.current = now;

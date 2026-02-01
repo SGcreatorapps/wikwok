@@ -5,6 +5,15 @@
   scroll-snap-type: y mandatory;
   background: #000;
   position: relative;
+  padding-top: 0;
+}
+
+/* Stories section at top */
+.stories-container {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #000;
 }
 
 /* Matrix rain effect overlay */

@@ -1,0 +1,158 @@
+.stories-container {
+  padding: 15px 0;
+  border-bottom: 1px solid #333;
+  background: linear-gradient(180deg, rgba(0,255,65,0.05) 0%, transparent 100%);
+}
+
+.stories-list {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  padding: 0 15px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.stories-list::-webkit-scrollbar {
+  display: none;
+}
+
+.story-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: transform 0.3s;
+  min-width: 70px;
+}
+
+.story-item:active {
+  transform: scale(0.9);
+}
+
+.story-ring {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  padding: 3px;
+  background: #333;
+  transition: all 0.3s;
+}
+
+.story-ring.active {
+  background: linear-gradient(45deg, #00ff41, #00cc33, #009926);
+  animation: rotate 3s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.story-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #161823;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #000;
+  overflow: hidden;
+}
+
+.story-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.story-avatar span {
+  font-size: 24px;
+  font-weight: bold;
+  color: #00ff41;
+}
+
+.add-story .story-ring {
+  background: #00ff41;
+}
+
+.add-story .story-avatar {
+  background: #000;
+}
+
+.story-username {
+  font-size: 12px;
+  color: #aaa;
+  max-width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Story Viewer Modal */
+.story-viewer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.story-progress {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  height: 3px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.story-progress-bar {
+  height: 100%;
+  background: #00ff41;
+  box-shadow: 0 0 10px #00ff41;
+  transition: width 0.1s linear;
+}
+
+.story-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px 20px;
+}
+
+.story-content h3 {
+  color: #00ff41;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-shadow: 0 0 20px #00ff41;
+}
+
+.story-content p {
+  color: #aaa;
+  text-align: center;
+}
+
+/* Hover effects for desktop */
+@media (hover: hover) {
+  .story-item:hover .story-ring.active {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(0,255,65,0.5);
+  }
+}

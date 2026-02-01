@@ -1,12 +1,20 @@
 .video-container {
   position: relative;
-  height: 100vh;
+  height: calc(100vh - 90px); /* Subtract bottom nav height */
   width: 100%;
   scroll-snap-align: start;
   background: #000;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 90px; /* Space for bottom nav */
+}
+
+@media (max-width: 768px) {
+  .video-container {
+    height: calc(100vh - 90px);
+    margin-bottom: 90px;
+  }
 }
 
 .video-element {

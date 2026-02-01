@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { videoAPI } from '../services/api';
 import VideoPlayer from '../components/VideoPlayer';
 import BottomNav from '../components/BottomNav';
+import Stories from '../components/Stories';
 import './Feed.css';
 
 const Feed = () => {
@@ -54,6 +55,7 @@ const Feed = () => {
 
   return (
     <div className="feed-container" ref={containerRef}>
+      <Stories />
       <div className="videos-wrapper">
         {videos.map((video, index) => (
           <VideoPlayer
